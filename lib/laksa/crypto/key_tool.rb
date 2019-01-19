@@ -23,7 +23,7 @@ module Laksa
         Utils.encode_hex @pk.pubkey.serialize(compressed: is_compressed)
       end
 
-      def get_address()
+      def get_address
         KeyTool.get_address(self.get_public_key)
       end
 
