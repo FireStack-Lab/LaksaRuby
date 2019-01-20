@@ -3,6 +3,7 @@ PATH
   specs:
     laksa (0.1.0)
       bitcoin-secp256k1
+      jimson
       pbkdf2-ruby
       scrypt
 
@@ -11,15 +12,36 @@ GEM
   specs:
     bitcoin-secp256k1 (0.5.0)
       ffi (>= 1.9.25)
+    blankslate (3.1.3)
+    domain_name (0.5.20180417)
+      unf (>= 0.0.5, < 1.0.0)
     ffi (1.10.0)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
+    jimson (0.11.0)
+      blankslate (~> 3.1, >= 3.1.3)
+      multi_json (~> 1, >= 1.11.2)
+      rack (~> 1, >= 1.4.5)
+      rest-client (~> 1, >= 1.7.3)
+    mime-types (2.99.3)
     minitest (5.11.3)
+    multi_json (1.13.1)
+    netrc (0.11.0)
     pbkdf2-ruby (0.2.1)
+    rack (1.6.11)
     rake (10.5.0)
+    rest-client (1.8.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
     scrypt (3.0.6)
       ffi-compiler (>= 1.0, < 2.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.5)
 
 PLATFORMS
   ruby
