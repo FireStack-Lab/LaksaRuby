@@ -1,6 +1,7 @@
 require "laksa/version"
 require 'laksa/crypto/key_tool'
 require 'laksa/crypto/key_store'
+require 'laksa/crypto/schnorr'
 require 'laksa/jsonrpc/provider'
 require 'laksa/wallet'
 
