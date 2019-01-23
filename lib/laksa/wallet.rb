@@ -25,5 +25,9 @@ module Laksa
 
       ret.join
     end
+
+    def self.is_public_key(public_key)
+      /\h{66}/ =~ public_key
+    end
   end
 end

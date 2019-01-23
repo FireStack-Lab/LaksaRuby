@@ -13,4 +13,12 @@ class WalletTest < Minitest::Test
     assert_equal Laksa::Wallet.to_checksum_address('72220E84947C36118CDBC580454DFAA3B918CD97'), '0x72220e84947c36118cDbC580454DFaa3b918cD97'
     assert_equal Laksa::Wallet.to_checksum_address('50F92304C892D94A385CA6CE6CD6950CE9A36839'), '0x50f92304c892D94A385cA6cE6CD6950ce9A36839'
   end
+
+  def test_is_public_key
+    valid_key = '039E43C9810E6CC09F46AAD38E716DAE3191629534967DC457D3A687D2E2CDDC6A'
+    assert Laksa::Wallet.is_public_key(valid_key)
+
+    bad_key = '039E43C9810E6CC09F46AAD38E716DAE3191629534967DC457D3A687D2E2CDDC6'
+    assert_nil Laksa::Wallet.is_public_key(bad_key)
+  end
 end
