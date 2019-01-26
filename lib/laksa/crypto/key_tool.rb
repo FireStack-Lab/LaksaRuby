@@ -19,15 +19,20 @@ module Laksa
         SecureRandom.random_bytes(size)
       end
 
-      def get_public_key(is_compressed = true)
-        Utils.encode_hex @pk.pubkey.serialize(compressed: is_compressed)
+      def self.get_public_key_from_private_lkey(private_key, is_compressed = true)
+        is_raw = private_key.length == 32 ? true : false
+
+        pk = PrivateKey.new(privkey: private_key, raw: is_raw)
+
+        Utils.encode_hex pk.pubkey.serialize(compressed: is_compressed)
       end
 
-      def get_address
-        KeyTool.get_address(self.get_public_key)
+      def self.get_address_from_private_key(private_key)
+        public_key = KeyTool.get_public_key_from_private_lkey(private_key)
+        KeyTool.get_address_from_public_key(public_key)
       end
 
-      def self.get_address(public_key = nil)
+      def self.get_address_from_public_key(public_key)
         orig_address = Digest::SHA256.hexdigest Utils.decode_hex public_key
         orig_address[24..-1]
       end

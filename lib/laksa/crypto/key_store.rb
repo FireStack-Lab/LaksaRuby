@@ -16,8 +16,7 @@ module Laksa
       end
 
       def encrypt_private_key(private_key, password, kdf_type)
-        key_tool = KeyTool.new(private_key)
-        address = key_tool.get_address
+        address = KeyTool.get_address_from_private_key(private_key)
 
         iv = KeyTool.generate_random_bytes(16)
         salt = KeyTool.generate_random_bytes(32)

@@ -14,11 +14,50 @@ class WalletTest < Minitest::Test
     assert_equal Laksa::Account::Wallet.to_checksum_address('50F92304C892D94A385CA6CE6CD6950CE9A36839'), '0x50f92304c892D94A385cA6cE6CD6950ce9A36839'
   end
 
-  def test_is_public_key
-    valid_key = '039E43C9810E6CC09F46AAD38E716DAE3191629534967DC457D3A687D2E2CDDC6A'
-    assert Laksa::Account::Wallet.is_public_key(valid_key)
+  def test_create
+    wallet = Laksa::Account::Wallet.new(nil, {})
+    address = wallet.create
+    assert address
+    assert Laksa::Util::Validator.address?(address)
+  end
 
-    bad_key = '039E43C9810E6CC09F46AAD38E716DAE3191629534967DC457D3A687D2E2CDDC6'
-    assert_nil Laksa::Account::Wallet.is_public_key(bad_key)
+  def test_add_by_private_key
+    wallet = Laksa::Account::Wallet.new(nil, {})
+    address = wallet.add_by_private_key('24180e6b0c3021aedb8f5a86f75276ee6fc7ff46e67e98e716728326102e91c9')
+    assert address
+    assert Laksa::Util::Validator.address?(address)
+  end
+
+  def test_add_by_key_store
+    json = "{\"address\":\"B5C2CDD79C37209C3CB59E04B7C4062A8F5D5271\",\"crypto\":{\"cipher\":\"aes-128-ctr\",\"cipherparams\":{\"iv\":\"BB77D985DFF840E54EE52510DDF6FE38\"},\"ciphertext\":\"2064375F0A006F70381B180B4B25A139F18F19A40F24ACA9B30AC9E51488DFD4\",\"kdf\":\"pbkdf2\",\"kdfparams\":{\"n\":8192,\"c\":262144,\"r\":8,\"p\":1,\"dklen\":32,\"salt\":[119,19,15,64,53,-57,27,-111,36,105,-72,36,-59,5,-128,77,41,113,-78,-60,66,-102,-123,1,100,-45,-114,80,71,-16,-75,31]},\"mac\":\"8F00ED9E2C84C9387CBC70AE305DBE7B87F87CE106227C381E5EA928A265BB8F\"},\"id\":\"9b5e1a6d-54e1-43a2-8a10-49ab4e41b903\",\"version\":3}\n";
+    wallet = Laksa::Account::Wallet.new(nil, {})
+    address = wallet.add_by_keystore(json, "xiaohuo")
+    assert address
+    assert Laksa::Util::Validator.address?(address)
+  end
+
+  def test_sign
+    private_key = "24180e6b0c3021aedb8f5a86f75276ee6fc7ff46e67e98e716728326102e91c9"
+
+    wallet = Laksa::Account::Wallet.new(nil, {})
+    wallet.add_by_private_key(private_key)
+
+    tx_params = Laksa::Account::TxParams.new
+    tx_params.version = '0'
+    tx_params.nonce = '0'
+    tx_params.to_addr = '2E3C9B415B19AE4035503A06192A0FAD76E04243'
+    tx_params.sender_pub_key = '04163fa604c65aebeb7048c5548875c11418d6d106a20a0289d67b59807abdd299d4cf0efcf07e96e576732dae122b9a8ac142214a6bc133b77aa5b79ba46b3e20'
+    tx_params.amount = '340282366920938463463374607431768211455'
+    tx_params.gas_price = '100'
+    tx_params.gas_limit = '1000'
+    tx_params.code = 'abc'
+    tx_params.data = 'def'
+
+    tx = Laksa::Account::Transaction.new(tx_params, nil)
+
+    exp = '3045022100b71c68d60c8256bd4b461da31e70c38dfc215af955b8486cb701c626b238b0ca0220780637f2f6e8fe28919d9b9d145b3289e3015ce0965a526b5911d9b9711cb044'
+    
+    wallet.sign(tx)
+    assert_equal exp, tx.signature
   end
 end
