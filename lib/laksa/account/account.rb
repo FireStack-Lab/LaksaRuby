@@ -4,7 +4,7 @@ module Laksa
       attr_reader :private_key, :public_key, :address
       def initialize(private_key)
         @private_key = private_key
-        @public_key = Laksa::Crypto::KeyTool.get_public_key_from_private_lkey(private_key, false)
+        @public_key = Laksa::Crypto::KeyTool.get_public_key_from_private_lkey(private_key, true)
         @address = Laksa::Crypto::KeyTool.get_address_from_public_key(@public_key)
       end
 
@@ -26,6 +26,7 @@ module Laksa
       def sign_transaction(tx)
         message = tx.bytes
         message_hex = Secp256k1::Utils.encode_hex(message)
+        puts message_hex
         Laksa::Crypto::Schnorr.sign(message_hex, self.private_key)
       end
     end

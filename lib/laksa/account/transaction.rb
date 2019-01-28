@@ -47,9 +47,6 @@ module Laksa
 
         raise 'standard length exceeded for value' if self.amount.to_i > 2 ** 128 - 1
 
-        value = self.amount.to_i
-        bs = [value / (2 ** 64), value % (2 ** 64)].pack('Q>*')
-
         protocol.amount = Laksa::Proto::ByteArray.new(data: bigint_to_bytes(self.amount.to_i))
         protocol.gasprice = Laksa::Proto::ByteArray.new(data: bigint_to_bytes(self.gas_price.to_i))
         protocol.gaslimit = self.gas_limit

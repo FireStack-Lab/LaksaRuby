@@ -6,8 +6,8 @@ class AccountTest < Minitest::Test
 
     account = Laksa::Account::Account.new(private_key)
     
-    public_key = '04163fa604c65aebeb7048c5548875c11418d6d106a20a0289d67b59807abdd299d4cf0efcf07e96e576732dae122b9a8ac142214a6bc133b77aa5b79ba46b3e20'
-    address = 'ad5744c0c6246d9704592116fccbf41978fe99c8'
+    public_key = '02163fa604c65aebeb7048c5548875c11418d6d106a20a0289d67b59807abdd299'
+    address = 'b5c2cdd79c37209c3cb59e04b7c4062a8f5d5271'
 
     assert_equal public_key, account.public_key
     assert_equal address, account.address

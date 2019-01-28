@@ -37,7 +37,8 @@ class WalletTest < Minitest::Test
   end
 
   def test_sign
-    private_key = "24180e6b0c3021aedb8f5a86f75276ee6fc7ff46e67e98e716728326102e91c9"
+    private_key = "e19d05c5452598e24caad4a0d85a49146f7be089515c905ae6a19e8a578a6930"
+    public_key = '0246e7178dc8253201101e18fd6f6eb9972451d121fc57aa2a06dd5c111e58dc6a'
 
     wallet = Laksa::Account::Wallet.new(nil, {})
     wallet.add_by_private_key(private_key)
@@ -46,7 +47,7 @@ class WalletTest < Minitest::Test
     tx_params.version = '0'
     tx_params.nonce = '0'
     tx_params.to_addr = '2E3C9B415B19AE4035503A06192A0FAD76E04243'
-    tx_params.sender_pub_key = '04163fa604c65aebeb7048c5548875c11418d6d106a20a0289d67b59807abdd299d4cf0efcf07e96e576732dae122b9a8ac142214a6bc133b77aa5b79ba46b3e20'
+    tx_params.sender_pub_key = public_key
     tx_params.amount = '340282366920938463463374607431768211455'
     tx_params.gas_price = '100'
     tx_params.gas_limit = '1000'
@@ -55,9 +56,14 @@ class WalletTest < Minitest::Test
 
     tx = Laksa::Account::Transaction.new(tx_params, nil)
 
-    exp = '3045022100b71c68d60c8256bd4b461da31e70c38dfc215af955b8486cb701c626b238b0ca0220780637f2f6e8fe28919d9b9d145b3289e3015ce0965a526b5911d9b9711cb044'
+    exp = '3045022100ab6ee570de8b55c4e1c5c34379e1f563e8eaee89ebd3af324f2aae3323a74b1202207cbe35a6dd450ba26a8980c78c444820192f775d9017cafd81082eb2b64a7a73'
     
     wallet.sign(tx)
     assert_equal exp, tx.signature
+
+    message = tx.bytes
+    message_hex = Secp256k1::Utils.encode_hex(message)
+    result = Laksa::Crypto::Schnorr.verify('111', tx.signature, public_key)
+    assert result
   end
 end

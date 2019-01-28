@@ -24,7 +24,7 @@ module Laksa
 
         pk = PrivateKey.new(privkey: private_key, raw: is_raw)
 
-        Utils.encode_hex pk.pubkey.serialize(compressed: is_compressed)
+        (Utils.encode_hex pk.pubkey.serialize(compressed: is_compressed)).upcase
       end
 
       def self.get_address_from_private_key(private_key)
