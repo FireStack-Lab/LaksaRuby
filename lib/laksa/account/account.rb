@@ -4,7 +4,7 @@ module Laksa
       attr_reader :private_key, :public_key, :address
       def initialize(private_key)
         @private_key = private_key
-        @public_key = Laksa::Crypto::KeyTool.get_public_key_from_private_lkey(private_key, true)
+        @public_key = Laksa::Crypto::KeyTool.get_public_key_from_private_key(private_key, true)
         @address = Laksa::Crypto::KeyTool.get_address_from_public_key(@public_key)
       end
 

@@ -19,7 +19,7 @@ module Laksa
         SecureRandom.random_bytes(size)
       end
 
-      def self.get_public_key_from_private_lkey(private_key, is_compressed = true)
+      def self.get_public_key_from_private_key(private_key, is_compressed = true)
         is_raw = private_key.length == 32 ? true : false
 
         pk = PrivateKey.new(privkey: private_key, raw: is_raw)
@@ -28,7 +28,7 @@ module Laksa
       end
 
       def self.get_address_from_private_key(private_key)
-        public_key = KeyTool.get_public_key_from_private_lkey(private_key)
+        public_key = KeyTool.get_public_key_from_private_key(private_key)
         KeyTool.get_address_from_public_key(public_key)
       end
 
