@@ -7,7 +7,7 @@ module Laksa
       include Secp256k1
 
       # Takes an array of Account objects and instantiates a Wallet instance.
-      def initialize(provider, accounts)
+      def initialize(provider = nil, accounts = {})
         @provider = provider
         @accounts = accounts
         if accounts.length > 0
@@ -118,7 +118,7 @@ module Laksa
 
         tx.sender_pub_key = account.public_key
         sig = account.sign_transaction(tx)
-        tx.signature = sig.downcase
+        tx.signature = sig.to_s
         tx
       end
     end

@@ -34,7 +34,7 @@ module Laksa
 
       def self.get_address_from_public_key(public_key)
         orig_address = Digest::SHA256.hexdigest Utils.decode_hex public_key
-        orig_address[24..-1]
+        orig_address[24..-1].upcase
       end
     end
   end

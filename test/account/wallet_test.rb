@@ -56,14 +56,13 @@ class WalletTest < Minitest::Test
 
     tx = Laksa::Account::Transaction.new(tx_params, nil)
 
-    exp = '3045022100ab6ee570de8b55c4e1c5c34379e1f563e8eaee89ebd3af324f2aae3323a74b1202207cbe35a6dd450ba26a8980c78c444820192f775d9017cafd81082eb2b64a7a73'
-    
     wallet.sign(tx)
-    assert_equal exp, tx.signature
 
     message = tx.bytes
     message_hex = Secp256k1::Utils.encode_hex(message)
-    result = Laksa::Crypto::Schnorr.verify('111', tx.signature, public_key)
+
+    r, s = tx.signature[0..63], tx.signature[64..-1]
+    result = Laksa::Crypto::Schnorr.verify(message_hex, Laksa::Crypto::Signature.new(r, s), public_key)
     assert result
   end
 end

@@ -12,17 +12,19 @@ module Laksa
       GET_TX_ATTEMPTS = 33
 
       def initialize(tx_params, provider, status = TxStatus::INITIALIZED)
-        @version = tx_params.version;
-        @nonce = tx_params.nonce
-        @amount = tx_params.amount
-        @gas_price = tx_params.gas_price
-        @gas_limit = tx_params.gas_limit
-        @signature = tx_params.signature
-        @receipt = tx_params.receipt
-        @sender_pub_key = tx_params.sender_pub_key
-        @to_addr = tx_params.to_addr.downcase
-        @code = tx_params.code || ''
-        @data = tx_params.data || ''
+        if tx_params
+          @version = tx_params.version;
+          @nonce = tx_params.nonce
+          @amount = tx_params.amount
+          @gas_price = tx_params.gas_price
+          @gas_limit = tx_params.gas_limit
+          @signature = tx_params.signature
+          @receipt = tx_params.receipt
+          @sender_pub_key = tx_params.sender_pub_key
+          @to_addr = tx_params.to_addr.downcase
+          @code = tx_params.code || ''
+          @data = tx_params.data || ''
+        end
 
         @provider = provider
         @status = status
@@ -75,6 +77,25 @@ module Laksa
         tx_params
       end
 
+
+
+      def to_payload
+        payload = TransactionPayload.new
+
+        payload.version = self.version.to_i
+        payload.nonce = self.nonce.to_i
+        payload.to_addr = Wallet.to_checksum_address(self.to_addr)[2..-1]
+        payload.amount = self.amount
+        payload.pub_key = self.sender_pub_key.downcase
+        payload.gas_price = self.gas_price
+        payload.gas_limit = self.gas_limit
+        payload.code = self.code
+        payload.data = self.data
+        payload.signature = self.signature
+
+        payload
+      end
+
       def pending?
         self.status == TxStatus::PENDING
       end
@@ -87,12 +108,11 @@ module Laksa
         this.status === TxStatus::CONFIRMED;
       end 
 
-      def rejected
+      def rejected?
         this.status === TxStatus::REJECTED;
       end
 
-
-      # Similar to the Promise API. This sets the Transaction instance to a state
+      # This sets the Transaction instance to a state
       # of pending. Calling this function kicks off a passive loop that polls the
       # lookup node for confirmation on the txHash.
       #
@@ -151,6 +171,12 @@ module Laksa
 
     class TxParams
       attr_accessor :id, :version, :nonce, :amount, :gas_price, :gas_limit, :signature, :receipt, :sender_pub_key, :to_addr, :code, :data
+      def initialize
+      end
+    end
+
+    class TransactionPayload
+      attr_accessor :version, :nonce, :to_addr, :amount, :pub_key, :gas_price, :gas_limit, :code, :data, :signature
       def initialize
       end
     end

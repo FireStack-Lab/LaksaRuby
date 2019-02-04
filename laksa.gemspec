@@ -40,6 +40,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "bitcoin-secp256k1"
   spec.add_dependency "scrypt"
   spec.add_dependency "pbkdf2-ruby"
-  spec.add_dependency "jimson"
+  spec.add_dependency "jsonrpc-client"
   spec.add_dependency 'protobuf'
 end

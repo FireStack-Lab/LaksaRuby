@@ -7,7 +7,10 @@ require 'laksa/account/account'
 require 'laksa/account/wallet'
 require 'laksa/account/transaction'
 require 'laksa/proto/message.pb'
+require 'laksa/contract/factory'
+require 'laksa/contract/contract'
 require 'laksa/util/validator'
+require 'laksa/util/utils'
 
 
 module Laksa
