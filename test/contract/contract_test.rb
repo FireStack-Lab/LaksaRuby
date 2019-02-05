@@ -59,7 +59,7 @@ class ContractTest < Minitest::Test
     wallet = Account::Wallet.new
     wallet.add_by_private_key('e19d05c5452598e24caad4a0d85a49146f7be089515c905ae6a19e8a578a6930')
     
-    factory = Contract::Factory.new(Jsonrpc::Provider.new('https://api.zilliqa.com/'), wallet)
+    factory = Contract::Factory.new(Jsonrpc::Provider.new('https://dev-api.zilliqa.com'), wallet)
 
     contract = factory.new_contract(code, init, '')
     

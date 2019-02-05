@@ -2,14 +2,14 @@
 
   class ProviderTest < Minitest::Test
     def setup
-      @provider = Laksa::Jsonrpc::Provider.new('https://api.zilliqa.com/')
+      @provider = Laksa::Jsonrpc::Provider.new('https://dev-api.zilliqa.com')
     end
 
     # Blockchain-related methods
-    def test_get_network_id
-      ret = @provider.GetNetworkId
-      assert_equal "TestNet", ret
-    end
+    # def test_get_network_id
+    #   ret = @provider.GetNetworkId
+    #   assert_equal "333", ret
+    # end
 
     # def test_get_blockchain_info
     #   ret = @provider.GetBlockchainInfo
@@ -127,27 +127,27 @@
 
   # Transaction-related methods
   # TODO: to be implemented
-  # def test_create_transaction
-  #   datas = {
-  #     "version": 65537,
-  #     "nonce": 1,
-  #     "toAddr": "0x4BAF5faDA8e5Db92C3d3242618c5B47133AE003C",
-  #     "amount": "1000000000000",
-  #     "pubKey": "0205273e54f262f8717a687250591dcfb5755b8ce4e3bd340c7abefd0de1276574",
-  #     "gasPrice": "1000000000",
-  #     "gasLimit": "1",
-  #     "code": "",
-  #     "data": "",
-  #     "signature": "29ad673848dcd7f5168f205f7a9fcd1e8109408e6c4d7d03e4e869317b9067e636b216a32314dd37176c35d51f9d4c24e0e519ba80e66206457c83c9029a490d",
-  #     "priority": false
-  #   }
-  #   ret = @provider.CreateTransaction
-  #   puts ret
-  #   assert ret != nil
-  # end
+  def test_create_transaction
+    datas = {
+      "version": 65537,
+      "nonce": 1,
+      "toAddr": "0x4BAF5faDA8e5Db92C3d3242618c5B47133AE003C",
+      "amount": "1000000000000",
+      "pubKey": "0205273e54f262f8717a687250591dcfb5755b8ce4e3bd340c7abefd0de1276574",
+      "gasPrice": "1000000000",
+      "gasLimit": "1",
+      "code": "",
+      "data": "",
+      "signature": "29ad673848dcd7f5168f205f7a9fcd1e8109408e6c4d7d03e4e869317b9067e636b216a32314dd37176c35d51f9d4c24e0e519ba80e66206457c83c9029a490d",
+      "priority": false
+    }
+    ret = @provider.CreateTransaction(datas)
+    puts ret
+    assert ret != nil
+  end
 
   # def test_get_transaction
-  #   transaction_id = "42752ebd7116bcb7d213ee065915055956e54b882a46e7ba0c343c94a52add07"
+  #   transaction_id = "9a1295809b1aa017abeaca6f4d49e1fba53439bca9cd29c51a897bc4af5c093c"
   #   ret = @provider.GetTransaction(transaction_id)
   #   puts ret
   #   assert ret != nil
