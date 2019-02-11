@@ -11,6 +11,7 @@ require 'laksa/contract/factory'
 require 'laksa/contract/contract'
 require 'laksa/util/validator'
 require 'laksa/util/utils'
+require 'laksa/util/unit'
 
 
 module Laksa

@@ -3,7 +3,7 @@ module Laksa
     extend self
 
     def pack(a, b)
-      a ** 17 + b
+      a << 16 + b
     end
 
     def encode_hex(b)
