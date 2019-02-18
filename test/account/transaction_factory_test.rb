@@ -2,7 +2,7 @@ require "test_helper"
 
 class TransactionFactoryTest < Minitest::Test
   def test_create_a_fresh_tx
-    provider = Laksa::Jsonrpc::Provider.new('https://dev-api.zilliqa.com')
+    provider = Laksa::Jsonrpc::Provider.new('https://mock.zilliqa.com')
     wallet = Laksa::Account::Wallet.new(provider)
     transaction_factory = Laksa::Account::TransactionFactory.new(provider, wallet)
 
@@ -16,5 +16,5 @@ class TransactionFactoryTest < Minitest::Test
     tx = transaction_factory.new(tx_params)
 
     assert tx.initialised?
-  end
+end
 end

@@ -12,7 +12,7 @@ module Laksa
       end
 
       def self.generate_private_key
-        KeyTool.generate_random_bytes(64)
+        Utils.encode_hex KeyTool.generate_random_bytes(32)
       end
 
       def self.generate_random_bytes(size)
@@ -24,7 +24,7 @@ module Laksa
 
         pk = PrivateKey.new(privkey: private_key, raw: is_raw)
 
-        (Utils.encode_hex pk.pubkey.serialize(compressed: is_compressed)).upcase
+        (Utils.encode_hex pk.pubkey.serialize(compressed: is_compressed)).downcase
       end
 
       def self.get_address_from_private_key(private_key)
@@ -34,7 +34,7 @@ module Laksa
 
       def self.get_address_from_public_key(public_key)
         orig_address = Digest::SHA256.hexdigest Utils.decode_hex public_key
-        orig_address[24..-1].upcase
+        orig_address[24..-1].downcase
       end
     end
   end

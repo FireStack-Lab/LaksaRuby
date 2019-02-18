@@ -26,7 +26,8 @@ module Laksa
       def sign_transaction(tx)
         message = tx.bytes
         message_hex = Secp256k1::Utils.encode_hex(message)
-        Laksa::Crypto::Schnorr.sign(message_hex, self.private_key)
+        
+        Laksa::Crypto::Schnorr.sign(message_hex, @private_key)
       end
     end
   end

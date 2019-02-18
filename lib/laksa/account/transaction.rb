@@ -68,8 +68,8 @@ module Laksa
         tx_params.gas_limit = self.gas_limit
         tx_params.signature = self.signature
         tx_params.receipt = self.receipt
-        tx_params.sender_pub_key = self.sender_pub_key.downcase
-        tx_params.to_addr = self.to_addr ? self.to_addr.downcase : '0000000000000000000000000000000000000000'
+        tx_params.sender_pub_key = self.sender_pub_key
+        tx_params.to_addr = self.to_addr ? Wallet.to_checksum_address(self.to_addr)[2..-1] : '0000000000000000000000000000000000000000'
         tx_params.code = self.code
         tx_params.data = self.data
 
@@ -81,9 +81,9 @@ module Laksa
 
         payload.version = self.version.to_i
         payload.nonce = self.nonce.to_i
-        payload.to_addr = Wallet.to_checksum_address(self.to_addr)[2..-1]
+        payload.to_addr = self.to_addr
         payload.amount = self.amount
-        payload.pub_key = self.sender_pub_key.downcase
+        payload.pub_key = self.sender_pub_key
         payload.gas_price = self.gas_price
         payload.gas_limit = self.gas_limit
         payload.code = self.code
@@ -94,19 +94,19 @@ module Laksa
       end
 
       def pending?
-        self.status == TxStatus::PENDING
+        @status == TxStatus::PENDING
       end
 
       def initialised?
-        self.status === TxStatus::INITIALIZED
+        @status === TxStatus::INITIALIZED
       end
 
       def confirmed?
-        this.status === TxStatus::CONFIRMED;
+        @status === TxStatus::CONFIRMED;
       end 
 
       def rejected?
-        this.status === TxStatus::REJECTED;
+        @status === TxStatus::REJECTED;
       end
 
       # This sets the Transaction instance to a state
@@ -118,7 +118,7 @@ module Laksa
       # This is a low-level method that you should generally not have to use
       # directly.
       def confirm(tx_hash, max_attempts = GET_TX_ATTEMPTS, interval = 1)
-        this.status = TxStatus::Pending;
+        @status = TxStatus::PENDING
         1.upto(max_attempts) do 
           if self.track_tx(tx_hash)
             return self
@@ -128,27 +128,29 @@ module Laksa
         end
 
         self.status = TxStatus::REJECTED
+        throw 'The transaction is still not confirmed after ${maxAttempts} attempts.'
       end
       
       def track_tx(tx_hash) 
         puts "tracking transaction: #{tx_hash}"
 
         begin
-          response = this.provider.GetTransaction(tx_hash)
+          response = @provider.GetTransaction(tx_hash)
         rescue Exception => e
           puts "transaction not confirmed yet"
           puts e
         end
 
-        unless response
+        if response['error']
           puts "transaction not confirmed yet"
           return false;
         end
 
-        self.id = response['ID']
-        self.receipt = response['receipt']
-        
-        if response['receipt'] && response['receipt']['success']
+        self.id = response['result']['ID']
+        self.receipt = response['result']['receipt']
+        self.receipt['cumulative_gas'] = response['result']['receipt']['cumulative_gas'].to_i
+
+        if self.receipt && self.receipt['success']
           puts "Transaction confirmed!"
           self.status = TxStatus::CONFIRMED
         else

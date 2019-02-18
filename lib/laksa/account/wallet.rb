@@ -113,7 +113,7 @@ module Laksa
 
         if tx.nonce == nil || tx.nonce.empty?
           result = @provider.GetBalance(account.address)
-          tx.nonce = (result['nonce'] + 1).to_s
+          tx.nonce = (result['nonce'].to_i + 1).to_s
         end
 
         tx.sender_pub_key = account.public_key
