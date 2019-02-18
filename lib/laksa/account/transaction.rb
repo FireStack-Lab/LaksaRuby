@@ -1,5 +1,4 @@
 require 'Secp256k1'
-require 'protobuf'
 
 module Laksa
   module Account
@@ -11,7 +10,7 @@ module Laksa
 
       GET_TX_ATTEMPTS = 33
 
-      def initialize(tx_params, provider, status = TxStatus::INITIALIZED)
+      def initialize(tx_params, provider, status = TxStatus::INITIALIZED, to_ds = false)
         if tx_params
           @version = tx_params.version;
           @nonce = tx_params.nonce
@@ -76,8 +75,6 @@ module Laksa
 
         tx_params
       end
-
-
 
       def to_payload
         payload = TransactionPayload.new

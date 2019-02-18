@@ -129,7 +129,7 @@
   # TODO: to be implemented
   def test_create_transaction
     datas = {
-      "version": 65537,
+      "version": Laksa::Util.pack(333, 8),
       "nonce": 1,
       "toAddr": "0x4BAF5faDA8e5Db92C3d3242618c5B47133AE003C",
       "amount": "1000000000000",
