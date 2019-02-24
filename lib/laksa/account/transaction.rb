@@ -5,7 +5,7 @@ module Laksa
     class Transaction
       include Secp256k1
 
-      attr_accessor :id, :version, :nonce, :amount, :gas_price, :gas_limit, :signature, :receipt, :sender_pub_key, :to_addr, :code, :data
+      attr_accessor :id, :version, :nonce, :amount, :gas_price, :gas_limit, :signature, :receipt, :sender_pub_key, :to_addr, :code, :data, :to_ds
       attr_accessor :provider, :status
 
       GET_TX_ATTEMPTS = 33
@@ -27,6 +27,7 @@ module Laksa
 
         @provider = provider
         @status = status
+        @to_ds = to_ds
       end
 
       # constructs an already-confirmed transaction.
@@ -77,20 +78,18 @@ module Laksa
       end
 
       def to_payload
-        payload = TransactionPayload.new
-
-        payload.version = self.version.to_i
-        payload.nonce = self.nonce.to_i
-        payload.to_addr = self.to_addr
-        payload.amount = self.amount
-        payload.pub_key = self.sender_pub_key
-        payload.gas_price = self.gas_price
-        payload.gas_limit = self.gas_limit
-        payload.code = self.code
-        payload.data = self.data
-        payload.signature = self.signature
-
-        payload
+        {
+          version: self.version.to_i,
+          nonce: self.nonce.to_i,
+          to_addr: self.to_addr,
+          amount: self.amount,
+          pub_key: self.sender_pub_key,
+          gas_price: self.gas_price,
+          gas_limit: self.gas_limit,
+          code: self.code,
+          data: self.data,
+          signature: self.signature
+        }
       end
 
       def pending?
@@ -170,18 +169,6 @@ module Laksa
 
     class TxParams
       attr_accessor :id, :version, :nonce, :amount, :gas_price, :gas_limit, :signature, :receipt, :sender_pub_key, :to_addr, :code, :data
-      def initialize
-      end
-    end
-
-    class TransactionPayload
-      attr_accessor :version, :nonce, :to_addr, :amount, :pub_key, :gas_price, :gas_limit, :code, :data, :signature
-      def initialize
-      end
-    end
-
-    class TxReceipt
-      attr_accessor :success, :cumulative_gas
       def initialize
       end
     end

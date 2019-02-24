@@ -3,7 +3,7 @@ require 'digest'
 
 module Laksa
   module Contract
-    class Factory
+    class ContractFactory
       include Secp256k1
 
       attr_reader :provider, :signer

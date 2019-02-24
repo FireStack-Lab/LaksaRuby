@@ -37,6 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "minitest", "~> 5.0"
+  spec.add_development_dependency "awesome_print"
   spec.add_dependency "bitcoin-secp256k1"
   spec.add_dependency "scrypt"
   spec.add_dependency "pbkdf2-ruby"

@@ -56,19 +56,21 @@ class ContractTest < Minitest::Test
 
     init = [Contract::Value.new('_scilla_version', 'Uint32', '0'), Contract::Value.new('owner', 'ByStr20', '0x9bfec715a6bd658fcb62b0f8cc9bfa2ade71434a')]
     
-    wallet = Account::Wallet.new
+    provider = Jsonrpc::Provider.new('https://dev-api.zilliqa.com')
+    wallet = Account::Wallet.new(provider)
     wallet.add_by_private_key('e19d05c5452598e24caad4a0d85a49146f7be089515c905ae6a19e8a578a6930')
     
-    factory = Contract::Factory.new(Jsonrpc::Provider.new('https://dev-api.zilliqa.com'), wallet)
+    factory = Contract::Factory.new(provider, wallet)
 
     contract = factory.new_contract(code, init, '')
     
     deploy_params = Contract::DeployParams.new(nil, Util.pack(2, 8), nil, '1000000000', '10000', '0246e7178dc8253201101e18fd6f6eb9972451d121fc57aa2a06dd5c111e58dc6a')
-    tx, contract = contract.deploy(deployParams, 300, 3);
+    tx, contract = contract.deploy(deploy_params, 300, 3);
 
-    # System.out.println("result is: " + result.toString());
+    puts tx
+    puts contract
 
-    # String transactionFee = new BigInteger(result.getKey().getReceipt().getCumulative_gas()).multiply(new BigInteger(result.getKey().getGasPrice())).toString();
-    # System.out.println("transaction fee is: " + transactionFee);
+    transaction_fee = tx.receipt['cumulative_gas'] * tx.gas_price
+    puts "fee is #{transaction_fee}"
   end
 end

@@ -117,7 +117,7 @@ class TransactionTest < Minitest::Test
     tx = Laksa::Account::Transaction.new(tx_params, @provider)  
 
     @provider.expect("GetTransaction", responses[2], ['some_hash'])
-    rejected =  tx.confirm('some_hash');
+    rejected = tx.confirm('some_hash');
 
     assert !rejected.tx_params.receipt['success']
 
