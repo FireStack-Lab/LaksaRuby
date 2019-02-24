@@ -21,6 +21,12 @@ module Laksa
         m != nil
       end
 
+      # checksum_address?
+      #
+      # takes hex-encoded string and returns boolean if address is checksumed
+      #
+      # @param {string} address
+      # @returns {boolean}
       def self.checksum_address?(address)
         self.address?(address) && Laksa::Account::Wallet::to_checksum_address(address) == address
       end

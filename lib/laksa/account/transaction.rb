@@ -2,6 +2,11 @@ require 'Secp256k1'
 
 module Laksa
   module Account
+    # 
+    # Transaction
+    # 
+    # Transaction is a functor. Its purpose is to encode the possible states a
+    # Transaction can be in:  Confirmed, Rejected, Pending, or Initialised (i.e., not broadcasted).
     class Transaction
       include Secp256k1
 

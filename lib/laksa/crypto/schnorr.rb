@@ -13,6 +13,10 @@ module Laksa
       def initialize
       end
 
+      # sign
+      #
+      # @param {Buffer} msg
+      # @param {Buffer} key
       def self.sign(message, private_key)
         k = Utils.encode_hex SecureRandom.random_bytes(32)
         k_bn = OpenSSL::BN.new(k, 16)
@@ -20,6 +24,13 @@ module Laksa
         self.try_sign(message, private_key, k_bn)
       end
 
+      # trySign
+      #
+      # @param {Buffer} message - the message to sign over
+      # @param {BN} privateKey - the private key
+      # @param {BN} k_bn - output of the HMAC-DRBG
+      #
+      # @returns {Signature | null =>}
       def self.try_sign(message, private_key, k_bn)
         group = OpenSSL::PKey::EC::Group.new('secp256k1')
 
@@ -41,6 +52,20 @@ module Laksa
         Signature.new(r_bn.to_s(16), s_bn.to_s(16))
       end
 
+
+      # Verify signature.
+      #
+      # @param {Buffer} message
+      # @param {Buffer} sig
+      # @param {Buffer} public_key
+      #
+      # @returns {boolean}
+      #
+      # 1. Check if r,s is in [1, ..., order-1]
+      # 2. Compute Q = sG + r*kpub
+      # 3. If Q = O (the neutral point), return 0;
+      # 4. r' = H(Q, kpub, m)
+      # 5. return r' == r
       def self.verify(message, sig, public_key)
         pubkey = PublicKey.new
         pubkey.deserialize Utils.decode_hex(public_key)
@@ -62,6 +87,8 @@ module Laksa
         h_bn.eql?(r_bn)
       end
 
+
+      # Hash (r | M).
       def self.hash(q_point, pubkey_point, message)
         sha256 = Digest::SHA256.new
         sha256 << q_point.to_octet_string(:compressed)

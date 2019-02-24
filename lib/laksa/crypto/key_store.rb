@@ -15,6 +15,18 @@ module Laksa
       def initialize
       end
 
+      # encryptPrivateKey
+      #
+      # Encodes and encrypts an account in the format specified by
+      # https://github.com/ethereum/wiki/wiki/Web3-Secret-Storage-Definition.
+      # However, note that, in keeping with the hash function used by Zilliqa's
+      # core protocol, the MAC is generated using sha256 instead of keccak.
+      #
+      # NOTE: only scrypt and pbkdf2 are supported.
+      #
+      # @param {string} private_key - hex-encoded private key
+      # @param {string} password - a password used for encryption
+      # @param {KDF} kdf_type - the key derivation function to be used
       def encrypt_private_key(private_key, password, kdf_type)
         address = KeyTool.get_address_from_private_key(private_key)
 
@@ -56,6 +68,12 @@ module Laksa
         datas.to_json
       end
 
+      # decrypt_private_key
+      #
+      # Recovers the private key from a keystore file using the given passphrase.
+      #
+      # @param {KeystoreV3} encrypt_json
+      # @param {string} password
       def decrypt_private_key(encrypt_json, password)
         datas = JSON.parse(encrypt_json)
 

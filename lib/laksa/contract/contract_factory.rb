@@ -3,6 +3,11 @@ require 'digest'
 
 module Laksa
   module Contract
+    # ContractFactory
+    #
+    # individual `Contract` instances are instead obtained by
+    # calling `ContractFactory.at` (for an already-deployed contract) and
+    # `ContractFactory.new` (to deploy a new contract).
     class ContractFactory
       include Secp256k1
 

@@ -71,6 +71,12 @@ module Laksa
         @default_account = @accounts[address]
       end
 
+      # to_checksum_address
+      # 
+      # takes hex-encoded string and returns the corresponding address
+      # 
+      # @param {string} address
+      # @returns {string}
       def self.to_checksum_address(address)
         address = address.downcase.gsub('0x', '')
 

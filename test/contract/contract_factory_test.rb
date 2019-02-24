@@ -51,7 +51,7 @@ class ContractFactoryTest < Minitest::Test
       { vname: 'symbol', type: 'String', value: 'NFT' },
     ],
     ABI,
-    );
+    )
 
     responses = [
       {
