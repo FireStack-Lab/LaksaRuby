@@ -26,7 +26,7 @@ Or install it yourself as:
 
 ## Usage
 
-### Generate A new amount
+### Generate A new address
 ```ruby
 private_key = Laksa::Crypto::KeyTool.generate_private_key
 public_key = Laksa::Crypto::KeyTool.get_public_key_from_private_key(private_key)
