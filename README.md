@@ -1,8 +1,12 @@
 # Laksa
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/laksa`. To experiment with that code, run `bin/console` for an interactive prompt.
+Laksa -- Zilliqa Blockchain Ruby Library
 
-TODO: Delete this and the text above, and describe your gem
+The project is still under development.
+
+## Requirement
+
+Ruby(2.5.3)
 
 ## Installation
 
@@ -22,18 +26,53 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Generate A new amount
+```ruby
+private_key = Laksa::Crypto::KeyTool.generate_private_key
+public_key = Laksa::Crypto::KeyTool.get_public_key_from_private_key(private_key)
+address = Laksa::Crypto::KeyTool.get_address_from_private_key(private_key)
+```
 
-## Development
+### Validate an address
+```ruby
+address = '2624B9EA4B1CD740630F6BF2FEA82AAC0067070B'
+Laksa::Util::Validator.address?(address)
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+### Validate checksum address
+```ruby
+checksum_address = '0x4BAF5faDA8e5Db92C3d3242618c5B47133AE003C'
+Laksa::Util::Validator.checksum_address?(checksum_address)
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+### Deploy a transaction
+```ruby
+private_key = "e19d05c5452598e24caad4a0d85a49146f7be089515c905ae6a19e8a578a6930"
 
-## Contributing
+provider = Laksa::Jsonrpc::Provider.new('https://dev-api.zilliqa.com')
+wallet = Laksa::Account::Wallet.new(provider)
+address = wallet.add_by_private_key(private_key)
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/laksa.
+factory = Laksa::Contract::ContractFactory.new(provider, wallet)
 
-## License
+contract = factory.new_contract(TEST_CONTRACT, [
+  {
+    vname: 'contractOwner',
+    type: 'ByStr20',
+    value: '0x124567890124567890124567890124567890',
+  },
+  { vname: 'name', type: 'String', value: 'NonFungibleToken' },
+  { vname: 'symbol', type: 'String', value: 'NFT' },
+],
+ABI,
+)
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+deploy_params = Laksa::Contract::DeployParams.new(nil, Laksa::Util.pack(8, 8), nil, 1000, 1000, nil)
+tx, deployed = contract.deploy(deploy_params)    
+```
+
+the definition of TEST_CONTRACT and ABI can be found in this folder. (./test/contract) 
+
+### Know a smart contract deposit
+```ruby
+```

@@ -25,6 +25,11 @@ class ValidatorTest < Minitest::Test
     assert !Laksa::Util::Validator.signature?(signature[0..-2])
   end
 
+  def test_address?
+    address = '2624B9EA4B1CD740630F6BF2FEA82AAC0067070B'
+    assert Laksa::Util::Validator.address?(address)
+  end
+
   def test_checksum_address?
     checksum_address = '0x4BAF5faDA8e5Db92C3d3242618c5B47133AE003C'
     assert Laksa::Util::Validator.checksum_address?(checksum_address)
