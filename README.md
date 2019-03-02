@@ -69,10 +69,12 @@ ABI,
 
 deploy_params = Laksa::Contract::DeployParams.new(nil, Laksa::Util.pack(8, 8), nil, 1000, 1000, nil)
 tx, deployed = contract.deploy(deploy_params)    
+
+assert tx.confirmed?
+assert deployed.deployed?
+assert_equal Laksa::Contract::ContractStatus::DEPLOYED, deployed.status
+
+assert /[A-F0-9]+/ =~ contract.address
 ```
 
 the definition of TEST_CONTRACT and ABI can be found in this folder. (./test/contract) 
-
-### Know a smart contract deposit
-```ruby
-```
