@@ -94,4 +94,4 @@ call_tx = deployed.call(
 receipt = call_tx.tx_params.receipt
 ```
 
-the definition of TEST_CONTRACT and ABI can be found in this folder. (./test/contract) 
+the definition of [TEST_CONTRACT](https://github.com/FireStack-Lab/LaksaRuby/blob/master/test/contract/test_contract.rb) and [ABI](https://github.com/FireStack-Lab/LaksaRuby/blob/master/test/contract/test_abi.rb) can be found in this folder. 
