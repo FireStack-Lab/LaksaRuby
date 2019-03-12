@@ -45,7 +45,7 @@ checksum_address = '0x4BAF5faDA8e5Db92C3d3242618c5B47133AE003C'
 Laksa::Util::Validator.checksum_address?(checksum_address)
 ```
 
-### Deploy a transaction
+### Deploy and Call a transaction
 ```ruby
 private_key = "e19d05c5452598e24caad4a0d85a49146f7be089515c905ae6a19e8a578a6930"
 
@@ -75,6 +75,23 @@ assert deployed.deployed?
 assert_equal Laksa::Contract::ContractStatus::DEPLOYED, deployed.status
 
 assert /[A-F0-9]+/ =~ contract.address
+
+# call a deployed contract
+call_tx = deployed.call(
+      'myTransition',
+      [
+        { vname: 'param_1', type: 'String', value: 'hello' },
+        { vname: 'param_2', type: 'String', value: 'world' },
+      ],
+      {
+        version: Laksa::Util.pack(8, 8),
+        amount: 0,
+        gasPrice: 1000,
+        gasLimit: 1000
+      })
+
+
+receipt = call_tx.tx_params.receipt
 ```
 
 the definition of TEST_CONTRACT and ABI can be found in this folder. (./test/contract) 
