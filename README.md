@@ -57,12 +57,10 @@ factory = Laksa::Contract::ContractFactory.new(provider, wallet)
 
 contract = factory.new_contract(TEST_CONTRACT, [
   {
-    vname: 'contractOwner',
+    vname: 'owner',
     type: 'ByStr20',
     value: '0x124567890124567890124567890124567890',
   },
-  { vname: 'name', type: 'String', value: 'NonFungibleToken' },
-  { vname: 'symbol', type: 'String', value: 'NFT' },
 ],
 ABI,
 )
@@ -78,10 +76,9 @@ assert /[A-F0-9]+/ =~ contract.address
 
 # call a deployed contract
 call_tx = deployed.call(
-      'myTransition',
+      'setHello',
       [
-        { vname: 'param_1', type: 'String', value: 'hello' },
-        { vname: 'param_2', type: 'String', value: 'world' },
+        { vname: 'msg', type: 'String', value: 'Hello World!' },
       ],
       {
         version: Laksa::Util.pack(8, 8),
