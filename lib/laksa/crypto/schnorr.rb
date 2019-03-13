@@ -18,8 +18,13 @@ module Laksa
       # @param {Buffer} msg
       # @param {Buffer} key
       def self.sign(message, private_key)
-        k = Utils.encode_hex SecureRandom.random_bytes(32)
-        k_bn = OpenSSL::BN.new(k, 16)
+        k_bn = nil
+        loop do 
+          k = Utils.encode_hex SecureRandom.random_bytes(32)
+          k_bn = OpenSSL::BN.new(k, 16)
+
+          break if k_bn < N
+        end
 
         self.try_sign(message, private_key, k_bn)
       end
