@@ -1,11 +1,8 @@
-require 'secp256k1'
 require 'digest'
 
 module Laksa
   module Account
     class Wallet
-      include Secp256k1
-
       # Takes an array of Account objects and instantiates a Wallet instance.
       def initialize(provider = nil, accounts = {})
         @provider = provider
@@ -80,7 +77,7 @@ module Laksa
       def self.to_checksum_address(address)
         address = address.downcase.gsub('0x', '')
 
-        s1 = Digest::SHA256.hexdigest(Utils.decode_hex(address))
+        s1 = Digest::SHA256.hexdigest(Util.decode_hex(address))
         v = s1.to_i(base=16)
 
         ret = ['0x']

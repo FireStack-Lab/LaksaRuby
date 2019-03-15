@@ -20,7 +20,7 @@ module Laksa
       def self.sign(message, private_key)
         sig = nil
         while !sig
-          k = Utils.encode_hex SecureRandom.random_bytes(32)
+          k = Util.encode_hex SecureRandom.random_bytes(32)
           k_bn = OpenSSL::BN.new(k, 16)
 
           sig = self.try_sign(message, private_key, k_bn)
@@ -90,7 +90,7 @@ module Laksa
       # 5. return r' == r
       def self.verify(message, sig, public_key)
         pubkey = PublicKey.new
-        pubkey.deserialize Utils.decode_hex(public_key)
+        pubkey.deserialize Util.decode_hex(public_key)
 
         r = sig.r
         r_bn = OpenSSL::BN.new(r, 16)
@@ -127,7 +127,7 @@ module Laksa
         sha256 = Digest::SHA256.new
         sha256 << q_point.to_octet_string(:compressed)
         sha256 << pubkey_point.to_octet_string(:compressed)
-        sha256 << Utils.decode_hex(message)
+        sha256 << Util.decode_hex(message)
 
         OpenSSL::BN.new(sha256.hexdigest, 16)
       end

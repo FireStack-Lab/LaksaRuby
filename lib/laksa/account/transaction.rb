@@ -1,5 +1,3 @@
-require 'Secp256k1'
-
 module Laksa
   module Account
     # 
@@ -8,8 +6,6 @@ module Laksa
     # Transaction is a functor. Its purpose is to encode the possible states a
     # Transaction can be in:  Confirmed, Rejected, Pending, or Initialised (i.e., not broadcasted).
     class Transaction
-      include Secp256k1
-
       attr_accessor :id, :version, :nonce, :amount, :gas_price, :gas_limit, :signature, :receipt, :sender_pub_key, :to_addr, :code, :data, :to_ds
       attr_accessor :provider, :status
 
@@ -49,8 +45,8 @@ module Laksa
         protocol = Laksa::Proto::ProtoTransactionCoreInfo.new
         protocol.version = self.version
         protocol.nonce = self.nonce || 0
-        protocol.toaddr =  Utils.decode_hex(self.to_addr.downcase)
-        protocol.senderpubkey = Laksa::Proto::ByteArray.new(data: Utils.decode_hex(self.sender_pub_key))
+        protocol.toaddr =  Util.decode_hex(self.to_addr.downcase)
+        protocol.senderpubkey = Laksa::Proto::ByteArray.new(data: Util.decode_hex(self.sender_pub_key))
 
         raise 'standard length exceeded for value' if self.amount.to_i > 2 ** 128 - 1
 

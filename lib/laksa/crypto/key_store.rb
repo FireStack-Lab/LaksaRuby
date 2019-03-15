@@ -7,8 +7,6 @@ require 'json'
 module Laksa
   module Crypto
     class KeyStore
-      include Secp256k1
-
       T_PBKDF2 = 'pbkdf2' 
       T_SCRYPT = 'scrypt'
 
@@ -48,15 +46,15 @@ module Laksa
         cipher.key = encrypt_key
         cipher.padding = 0
         
-        ciphertext = cipher.update(Utils.decode_hex(private_key)) + cipher.final
+        ciphertext = cipher.update(Util.decode_hex(private_key)) + cipher.final
 
         mac = generate_mac(derived_key, ciphertext)
 
         datas = {address: address, 
           crypto: {
             cipher: 'aes-128-ctr', 
-            cipherparams: {'iv': Utils.encode_hex(iv)}, 
-            ciphertext: Utils.encode_hex(ciphertext), 
+            cipherparams: {'iv': Util.encode_hex(iv)}, 
+            ciphertext: Util.encode_hex(ciphertext), 
             kdf: kdf_type, 
             kdfparams: {n: 8192, c:262144, r:8, p:1, dklen: 32, salt: salt.bytes}, 
             mac: mac
@@ -77,8 +75,8 @@ module Laksa
       def decrypt_private_key(encrypt_json, password)
         datas = JSON.parse(encrypt_json)
 
-        ciphertext = Utils.decode_hex(datas['crypto']['ciphertext'])
-        iv = Utils.decode_hex(datas['crypto']['cipherparams']['iv'])
+        ciphertext = Util.decode_hex(datas['crypto']['ciphertext'])
+        iv = Util.decode_hex(datas['crypto']['cipherparams']['iv'])
         kdfparams = datas['crypto']['kdfparams']
         kdf_type = datas['crypto']['kdf']
 
@@ -103,7 +101,7 @@ module Laksa
         
         private_key = cipher.update(ciphertext) + cipher.final
 
-        return Utils.encode_hex private_key
+        return Util.encode_hex private_key
       end
 
       private

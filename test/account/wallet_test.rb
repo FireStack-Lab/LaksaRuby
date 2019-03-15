@@ -59,7 +59,7 @@ class WalletTest < Minitest::Test
     wallet.sign(tx)
 
     message = tx.bytes
-    message_hex = Secp256k1::Utils.encode_hex(message)
+    message_hex = Laksa::Util.encode_hex(message)
 
     r, s = tx.signature[0..63], tx.signature[64..-1]
     result = Laksa::Crypto::Schnorr.verify(message_hex, Laksa::Crypto::Signature.new(r, s), public_key)

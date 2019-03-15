@@ -1,4 +1,3 @@
-require 'secp256k1'
 require 'digest'
 
 module Laksa
@@ -9,7 +8,6 @@ module Laksa
     # calling `ContractFactory.at` (for an already-deployed contract) and
     # `ContractFactory.new` (to deploy a new contract).
     class ContractFactory
-      include Secp256k1
 
       attr_reader :provider, :signer
 
@@ -23,7 +21,7 @@ module Laksa
 
         sender_address = Laksa::Crypto::KeyTool.get_address_from_public_key(tx.sender_pub_key)
 
-        sha256 << Utils.decode_hex(sender_address)
+        sha256 << Util.decode_hex(sender_address)
 
         nonce = 0;
         if tx.nonce && !tx.nonce.empty?

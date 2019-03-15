@@ -11,7 +11,7 @@ require 'laksa/proto/message.pb'
 require 'laksa/contract/contract_factory'
 require 'laksa/contract/contract'
 require 'laksa/util/validator'
-require 'laksa/util/utils'
+require 'laksa/util/util'
 require 'laksa/util/unit'
 
 

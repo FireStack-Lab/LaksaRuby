@@ -198,7 +198,7 @@ class TransactionTest < Minitest::Test
     tx = Laksa::Account::Transaction.new(tx_params, nil)
 
     ret = tx.bytes
-    ret_hex = Secp256k1::Utils.encode_hex(ret)
+    ret_hex = Laksa::Util.encode_hex(ret)
     exp = '080010001A142E3C9B415B19AE4035503A06192A0FAD76E0424322230A210246E7178DC8253201101E18FD6F6EB9972451D121FC57AA2A06DD5C111E58DC6A2A120A10FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF32120A100000000000000000000000000000006438E80742036162634A03646566'
     assert_equal exp.downcase, ret_hex
   end
@@ -217,7 +217,7 @@ class TransactionTest < Minitest::Test
     tx = Laksa::Account::Transaction.new(tx_params, nil)
 
     ret = tx.bytes
-    ret_hex = Secp256k1::Utils.encode_hex(ret)
+    ret_hex = Laksa::Util.encode_hex(ret)
     exp = '080010001a142e3c9b415b19ae4035503a06192a0fad76e0424322230a210246e7178dc8253201101e18fd6f6eb9972451d121fc57aa2a06dd5c111e58dc6a2a120a100000000000000000000000000000271032120a100000000000000000000000000000006438e80742004a00'
     assert_equal exp.downcase, ret_hex
   end

@@ -25,7 +25,7 @@ module Laksa
       # sign the passed in transaction with the account's private and public key
       def sign_transaction(tx)
         message = tx.bytes
-        message_hex = Secp256k1::Utils.encode_hex(message)
+        message_hex = Util.encode_hex(message)
         
         Laksa::Crypto::Schnorr.sign(message_hex, @private_key)
       end
