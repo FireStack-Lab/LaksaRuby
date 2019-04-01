@@ -17,13 +17,13 @@ module Laksa
       #
       # @param {String} msg
       # @param {String} key
-      def self.sign(message, private_key)
+      def self.sign(message, private_key, public_key)
         sig = nil
         while !sig
           k = Util.encode_hex SecureRandom.random_bytes(32)
           k_bn = OpenSSL::BN.new(k, 16)
 
-          sig = self.try_sign(message, private_key, k_bn)
+          sig = self.try_sign(message, private_key, k_bn, public_key)
         end
 
         sig
@@ -36,12 +36,10 @@ module Laksa
       # @param {BN} k_bn - output of the HMAC-DRBG
       #
       # @returns {Signature | null =>}
-      def self.try_sign(message, private_key, k_bn)
+      def self.try_sign(message, private_key, k_bn, public_key)
         group = OpenSSL::PKey::EC::Group.new('secp256k1')
 
         prikey_bn = OpenSSL::BN.new(private_key, 16)
-
-        public_key = KeyTool.get_public_key_from_private_key(private_key)
 
         pubkey_bn = OpenSSL::BN.new(public_key, 16)
         pubkey_point = OpenSSL::PKey::EC::Point.new(group, pubkey_bn)

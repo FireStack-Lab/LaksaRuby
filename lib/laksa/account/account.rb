@@ -27,7 +27,7 @@ module Laksa
         message = tx.bytes
         message_hex = Util.encode_hex(message)
         
-        Laksa::Crypto::Schnorr.sign(message_hex, @private_key)
+        Laksa::Crypto::Schnorr.sign(message_hex, @private_key, @public_key)
       end
     end
   end
