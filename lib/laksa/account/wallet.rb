@@ -95,7 +95,7 @@ module Laksa
       # signs an unsigned transaction with the default account.
       def sign(tx)
         tx_params = tx.tx_params
-        if (tx_params.try(:sender_pub_key))
+        if tx_params.sender_pub_key
           # attempt to find the address
           address = Laksa::Crypto::KeyTool.get_address_from_public_key(tx_params.sender_pub_key)
           account = @accounts[address]
@@ -114,9 +114,9 @@ module Laksa
 
         raise 'The selected account does not exist on this Wallet instance.' unless account 
 
-        if tx.nonce == nil || tx.nonce.empty?
+        if tx.nonce == nil
           result = @provider.GetBalance(account.address)
-          tx.nonce = (result['nonce'].to_i + 1).to_s
+          tx.nonce = result['nonce'].to_i + 1
         end
 
         tx.sender_pub_key = account.public_key

@@ -22,8 +22,8 @@ module Laksa
           @receipt = tx_params.receipt
           @sender_pub_key = tx_params.sender_pub_key
           @to_addr = tx_params.to_addr.downcase
-          @code = tx_params.code || ''
-          @data = tx_params.data || ''
+          @code = tx_params.code
+          @data = tx_params.data
         end
 
         @provider = provider
@@ -44,8 +44,8 @@ module Laksa
       def bytes
         protocol = Laksa::Proto::ProtoTransactionCoreInfo.new
         protocol.version = self.version
-        protocol.nonce = self.nonce || 0
-        protocol.toaddr =  Util.decode_hex(self.to_addr.downcase)
+        protocol.nonce = self.nonce
+        protocol.toaddr =  Util.decode_hex(self.to_addr.downcase[2..-1])
         protocol.senderpubkey = Laksa::Proto::ByteArray.new(data: Util.decode_hex(self.sender_pub_key))
 
         raise 'standard length exceeded for value' if self.amount.to_i > 2 ** 128 - 1
@@ -53,10 +53,10 @@ module Laksa
         protocol.amount = Laksa::Proto::ByteArray.new(data: bigint_to_bytes(self.amount.to_i))
         protocol.gasprice = Laksa::Proto::ByteArray.new(data: bigint_to_bytes(self.gas_price.to_i))
         protocol.gaslimit = self.gas_limit
-        protocol.code = self.code
-        protocol.data = self.data
+        protocol.code = self.code if self.code
+        protocol.data = self.data if self.data
 
-        protocol.encode
+        Laksa::Proto::ProtoTransactionCoreInfo.encode(protocol)
       end
 
       def tx_params
@@ -71,7 +71,7 @@ module Laksa
         tx_params.signature = self.signature
         tx_params.receipt = self.receipt
         tx_params.sender_pub_key = self.sender_pub_key
-        tx_params.to_addr = self.to_addr ? Wallet.to_checksum_address(self.to_addr)[2..-1] : '0000000000000000000000000000000000000000'
+        tx_params.to_addr = Wallet.to_checksum_address(self.to_addr)
         tx_params.code = self.code
         tx_params.data = self.data
 
@@ -82,11 +82,11 @@ module Laksa
         {
           version: self.version.to_i,
           nonce: self.nonce.to_i,
-          to_addr: self.to_addr,
+          toAddr: Wallet.to_checksum_address(self.to_addr),
           amount: self.amount,
-          pub_key: self.sender_pub_key,
-          gas_price: self.gas_price,
-          gas_limit: self.gas_limit,
+          pubKey: self.sender_pub_key,
+          gasPrice: self.gas_price,
+          gasLimit: self.gas_limit,
           code: self.code,
           data: self.data,
           signature: self.signature
