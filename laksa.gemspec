@@ -41,5 +41,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "scrypt"
   spec.add_dependency "pbkdf2-ruby"
   spec.add_dependency "jsonrpc-client"
-  spec.add_dependency 'protobuf'
+  spec.add_dependency 'google-protobuf'
 end
