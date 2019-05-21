@@ -30,6 +30,11 @@ module Laksa
       def self.checksum_address?(address)
         self.address?(address) && Laksa::Account::Wallet::to_checksum_address(address) == address
       end
+
+      def self.bech32?(address)
+        m = /^zil1[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{38}/ =~ address
+        m != nil
+      end
     end
   end
 end

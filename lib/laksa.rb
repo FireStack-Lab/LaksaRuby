@@ -13,6 +13,7 @@ require 'laksa/contract/contract'
 require 'laksa/util/validator'
 require 'laksa/util/util'
 require 'laksa/util/unit'
+require 'laksa/util/bech32'
 
 
 module Laksa

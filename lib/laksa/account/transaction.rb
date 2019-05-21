@@ -45,7 +45,7 @@ module Laksa
         protocol = Laksa::Proto::ProtoTransactionCoreInfo.new
         protocol.version = self.version
         protocol.nonce = self.nonce
-        protocol.toaddr =  Util.decode_hex(self.to_addr.downcase[2..-1])
+        protocol.toaddr =  Util.decode_hex(self.to_addr.downcase.sub('0x',''))
         protocol.senderpubkey = Laksa::Proto::ByteArray.new(data: Util.decode_hex(self.sender_pub_key))
 
         raise 'standard length exceeded for value' if self.amount.to_i > 2 ** 128 - 1

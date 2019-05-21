@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     laksa (0.1.0)
+      bitcoin-ruby
       bitcoin-secp256k1
       google-protobuf
       jsonrpc-client
@@ -11,11 +12,16 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    bitcoin-ruby (0.0.19)
+      eventmachine
+      ffi
+      scrypt
     bitcoin-secp256k1 (0.5.1)
       ffi (>= 1.9.25)
+    eventmachine (1.2.7)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
-    ffi (1.10.0)
+    ffi (1.11.1)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake

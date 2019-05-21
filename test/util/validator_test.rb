@@ -36,4 +36,10 @@ class ValidatorTest < Minitest::Test
     assert !Laksa::Util::Validator.checksum_address?(checksum_address[0..-2])
     assert !Laksa::Util::Validator.checksum_address?(checksum_address.upcase)
   end
+
+  def test_bech32?
+    address = 'zil1ej8wy3mnux6t9zeuc4vkhww0csctfpznzt4s76'
+    
+    assert Laksa::Util::Validator.bech32?(address)
+  end
 end
