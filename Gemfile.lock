@@ -33,7 +33,7 @@ GEM
     multi_json (1.13.1)
     multipart-post (2.1.1)
     pbkdf2-ruby (0.2.1)
-    rake (10.5.0)
+    rake (13.0.1)
     scrypt (3.0.6)
       ffi-compiler (>= 1.0, < 2.0)
 
@@ -44,7 +44,7 @@ DEPENDENCIES
   bundler (~> 1.16)
   laksa!
   minitest (~> 5.0)
-  rake (~> 10.0)
+  rake (~> 13.0)
 
 BUNDLED WITH
    1.17.2
